@@ -30,8 +30,7 @@ function getLocation() {
 function getWeather() {
     var requestURL = 'https://api.openweathermap.org/data/2.5/weather?lat=' + latitude + '&lon=' + longitude + '&units=imperial&APPID=c4775d1a77795c9e3426b0f8b3ca1221';
 
-    var currentDay = dayjs().format('M/D/YYYY');
-    currentHeader.innerHTML = '[City]' + "(" + currentDay + ")";
+    
 
     fetch(requestURL)
         .then(function(response) {
@@ -52,10 +51,16 @@ function getWeather() {
             currentWeather.appendChild(weatherWind);
             currentWeather.appendChild(weatherHumidity);
 
+            var currentDay = dayjs().format('M/D/YYYY');
+            var icon = document.createElement('img');
+            icon.src = 'http://openweathermap.org/img/wn/' + data.weather[0].icon + '@2x.png';
+            currentHeader.innerHTML = '[City]' + "(" + currentDay + ")  ";
+            currentHeader.append(icon);
 
         })
-}
 
+}
+// new Date
 function getForecast() {
     var requestURL = 'https://api.openweathermap.org/data/2.5/forecast?lat=' + latitude + '&lon=' + longitude + '&units=imperial&APPID=c4775d1a77795c9e3426b0f8b3ca1221';
 
@@ -73,13 +78,13 @@ function getForecast() {
                 var div = document.createElement('div');
                 div.className = "col border";
                 var date = document.createElement('li');
-                var icon = document.createElement('li');
+                var icon = document.createElement('img');
                 var temp = document.createElement('li');
                 var wind = document.createElement('li');
                 var humidity = document.createElement('li');
 
                 date.innerHTML = data[i].dt_txt;
-                icon.innerHTML = data[i].weather[0].icon ;
+                icon.src = 'http://openweathermap.org/img/wn/' + data[i].weather[0].icon + '@2x.png';
                 temp.innerHTML = 'Temp: ' + data[i].main.temp + '\u00B0F';
                 wind.innerHTML = 'Wind: ' + data[i].wind.speed +'mph';
                 humidity.innerHTML = 'Humidity: ' + data[i].main.humidity + '%';
