@@ -1,7 +1,7 @@
 var currentWeather = document.getElementById('current-weather-container');
 var currentHeader = document.getElementById('city-date');
 var searchButton = document.getElementById('search-button');
-var forecastWeather = document.getElementById('forecast-container');
+var forecastWeather = document.getElementById('daily-forecast-container');
 
 function suggestLocation() {
 
@@ -71,6 +71,7 @@ function getForecast() {
             for (var i = 0; i < 5; i++) {
                 
                 var div = document.createElement('div');
+                div.className = "col border";
                 var date = document.createElement('li');
                 var icon = document.createElement('li');
                 var temp = document.createElement('li');
@@ -85,11 +86,11 @@ function getForecast() {
                                    
                 // Adds the li element to the HTML id 
                 forecastWeather.appendChild(div);
-                forecastWeather.appendChild(date);
-                forecastWeather.appendChild(icon);
-                forecastWeather.appendChild(temp);
-                forecastWeather.appendChild(wind);
-                forecastWeather.appendChild(humidity);
+                div.appendChild(date);
+                div.appendChild(icon);
+                div.appendChild(temp);
+                div.appendChild(wind);
+                div.appendChild(humidity);
 
            
 

@@ -13,30 +13,45 @@
 </head>
 <body>
 
-    <div id="sidebar-container">
-        <div id="current-search">
+    <div class ="container-fluid row flex-nowrap">
 
-            <label for="city-name">Search for a city:</label><br>
-            <input type="text" id="city-name"><br>
+        <div id="sidebar-container" class="col-3">
+
+            <div id="current-search">
+                
+                <input type="text" id="city-name"><br>
+                <label for="city-name">Search for a city:</label><br>
             
             <input id="search-button" type="submit" value="Search">
+
+            </div>
+
+            <div id="previous-search">
+
+                <h1>Previous Searches:</h1>
+
+            </div>
+
         </div>
-        <div id="previous-search">
-            <h1>Previous Searches:</h1>
+
+        <div id="main-container" class="col">
+            
+            <div id="current-weather-container">
+                <h1 id="city-date"></h1>
+                
+            </div>
+            
+            <div id="forecast-container">
+                <h1>5-Day Forecast:</h1>
+                <div id="daily-forecast-container" class="row flex-nowrap">
+
+                </div>
+                
+            </div>
+
         </div>
-
-    </div>
-
-    <div id="current-weather-container">
-        <h1 id="city-date"></h1>
-
-    </div>
-
-    <div id="forecast-container">
-        <h1>5-Day Forecast:</h1>
-
-    </div>
     
+    </div>
 
     <script src="./assets/js/script.js"></script>
     <script
