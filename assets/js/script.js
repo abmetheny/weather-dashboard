@@ -3,12 +3,12 @@ var currentHeader = document.getElementById('city-date');
 var searchButton = document.getElementById('search-button');
 var forecastWeather = document.getElementById('daily-forecast-container');
 
-function suggestLocation() {
-
-}
+var searchInputVal = "";
 
 function getLocation() {
-    var requestURL = 'https://api.openweathermap.org/geo/1.0/direct?q=Richmond,VA,US&limit=5&APPID=c4775d1a77795c9e3426b0f8b3ca1221';
+    searchInputVal = document.querySelector('#city-name').value.replace(/\s+/g, '');
+    console.log(searchInputVal);
+    var requestURL = 'https://api.openweathermap.org/geo/1.0/direct?q=' + searchInputVal + '&APPID=c4775d1a77795c9e3426b0f8b3ca1221';
 
     fetch(requestURL)
         .then(function(response) {
@@ -54,7 +54,7 @@ function getWeather() {
             var currentDay = dayjs().format('M/D/YYYY');
             var icon = document.createElement('img');
             icon.src = 'http://openweathermap.org/img/wn/' + data.weather[0].icon + '@2x.png';
-            currentHeader.innerHTML = '[City]' + "(" + currentDay + ")  ";
+            currentHeader.innerHTML = searchInputVal + " (" + currentDay + ")  ";
             currentHeader.append(icon);
 
         })
@@ -104,6 +104,5 @@ function getForecast() {
         })
 }
 
-getLocation();
 
-searchButton.addEventListener('submit', suggestLocation);
+searchButton.addEventListener('click', getLocation);
