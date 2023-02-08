@@ -1,7 +1,7 @@
 var currentWeather = document.getElementById('current-weather-container');
+var currentHeader = document.getElementById('city-date');
 var searchButton = document.getElementById('search-button');
 var forecastWeather = document.getElementById('forecast-container');
-
 
 function suggestLocation() {
 
@@ -29,6 +29,9 @@ function getLocation() {
 
 function getWeather() {
     var requestURL = 'https://api.openweathermap.org/data/2.5/weather?lat=' + latitude + '&lon=' + longitude + '&units=imperial&APPID=c4775d1a77795c9e3426b0f8b3ca1221';
+
+    var currentDay = dayjs().format('M/D/YYYY');
+    currentHeader.innerHTML = '[City]' + "(" + currentDay + ")";
 
     fetch(requestURL)
         .then(function(response) {
@@ -74,7 +77,7 @@ function getForecast() {
                 var wind = document.createElement('li');
                 var humidity = document.createElement('li');
 
-                date.innerHTML = data[i].dt;
+                date.innerHTML = data[i].dt_txt;
                 icon.innerHTML = data[i].weather[0].icon ;
                 temp.innerHTML = 'Temp: ' + data[i].main.temp + '\u00B0F';
                 wind.innerHTML = 'Wind: ' + data[i].wind.speed +'mph';
