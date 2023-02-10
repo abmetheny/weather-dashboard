@@ -112,6 +112,19 @@ function getForecast() {
             var data = data.list;
             console.log(data);
 
+            function getEveryNth(data, nth) {
+                var result = [];
+
+                for (var i = 0; i < data.length; i += nth) {
+                    result.push(data[i]);
+                }
+
+                return result;
+            }
+
+            data = getEveryNth(data, 8);
+            console.log(data);
+
             for (var i = 0; i < 5; i++) {
 
                 var div = document.createElement('div');
