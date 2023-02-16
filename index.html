@@ -13,8 +13,10 @@
 </head>
 <body>
 
+    <h1>Weather Dashboard</h1>
     <div class ="container-fluid row flex-nowrap">
 
+        <!-- Current and previous searches sidebar -->
         <div id="sidebar-container" class="col-3">
 
             <div id="current-search">
@@ -28,25 +30,25 @@
 
             <div id="previous-search">
 
-                <h1>Previous Searches:</h1>
+                <h2>Previous Searches:</h1>
 
             </div>
 
         </div>
 
+        <!-- Container for the API query results -->
         <div id="main-container" class="col">
+
+            <h2 id="city-date"></h2>
             
-            <h1 id="city-date"></h1>
-            
-            <div id="current-weather-container">
-                
-                
-            </div>
+            <!-- Current weather for a given city -->
+            <div id="current-weather-container"></div>
             
             <div id="forecast-container">
-
-                <h1 id="forecast-header"></h1>
-
+                
+                <h2 id="forecast-header"></h2>
+                
+                <!-- 5-day forecast for a given city -->
                 <div id="daily-forecast-container" class="row flex-nowrap">
 
                 </div>

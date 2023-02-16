@@ -4,33 +4,18 @@ var currentHeader = document.getElementById('city-date');
 var searchButton = document.getElementById('search-button');
 var forecastHeader = document.getElementById('forecast-header');
 var forecastWeather = document.getElementById('daily-forecast-container');
+var previousSearch = document.getElementById('previous-search');
 
 var searchInputVal = "";
+var searchInputArray = [];
+var storageArray = loadStorage();
 
-// function checkInputs() {
-//     if (currentHeader == "") {
-//         getLocation();
-//     } else {
-//         clearInput();
-//         removeNodes();
-//         getLocation();
-//     }
-// }
-
-// function clearInput() {
-//     currentCity.value = '';
-// }
-
-// function removeNodes() {
-//     currentWeather.innerHTML = '';
-//     currentHeader.innerHTML = '';
-//     forecastHeader.innerHTML = '';
-//     forecastWeather.innerHTML = '';
-// }
-
+// Uses user input to query opeanweather API for city latitude and longitude
 function getLocation() {
     searchInputVal = document.querySelector('#city-name').value.replace(/\s+/g, '');
     console.log(searchInputVal);
+    storePreviousSearch();
+    // displayPreviousSearch();
     var requestURL = 'https://api.openweathermap.org/geo/1.0/direct?q=' + searchInputVal + '&APPID=c4775d1a77795c9e3426b0f8b3ca1221';
 
 
@@ -39,44 +24,67 @@ function getLocation() {
             return response.json();
         })
         .then(function(data) {
-            console.log(data);
+            // console.log(data);
             latitude = data[0].lat;
             longitude = data[0].lon;
-            console.log(latitude);
-            console.log(longitude);
+            // console.log(latitude);
+            // console.log(longitude);
 
             getWeather();
             getForecast();
             
         })
-
-    function clearInput() {
-        currentCity.value = '';
-    }
-
-    function removeNodes() {
-        currentWeather.innerHTML = '';
-        currentHeader.innerHTML = '';
-        forecastHeader.innerHTML = '';
-        forecastWeather.innerHTML = '';
-    }
-
+ 
     clearInput();
     removeNodes();
 
 }
 
+// Pushes user inputs into an array
+function storePreviousSearch() {
+    searchInputArray.push(searchInputVal);
+    console.log(searchInputArray);
+    for (i = 0; i < searchInputArray.length; i++) {
+        localStorage.setItem(i, JSON.stringify(searchInputArray[i]));
+    }
+}
+
+// Loads locally stored key/value pairs into a new array to prevent overwrite on page refresh
+function loadStorage() {
+    var storedPairs = {...localStorage};
+    return storedPairs;
+}
+
+// function displayPreviousSearch() {
+//     let storageArray = JSON.parse(localStorage.getItem('previous'));
+//     console.log(storageArray);
+//     // var previousButton = document.createElement('button');
+// }
+
+
+// Clears out the search field
+function clearInput() {
+    currentCity.value = '';
+}
+
+// Clears out the query result elements
+function removeNodes() {
+    currentHeader.innerHTML = '';
+    currentWeather.innerHTML = '';
+    forecastHeader.innerHTML = '';
+    forecastWeather.innerHTML = '';
+}
+
+// Uses latitude/longitude inputs for an openweather API query to get and display current weather information for that city
 function getWeather() {
     var requestURL = 'https://api.openweathermap.org/data/2.5/weather?lat=' + latitude + '&lon=' + longitude + '&units=imperial&APPID=c4775d1a77795c9e3426b0f8b3ca1221';
-
-    
 
     fetch(requestURL)
         .then(function(response) {
             return response.json();
         })
         .then(function(data) {
-            console.log(data);
+            // console.log(data);
 
             var weatherTemp = document.createElement('li');
             var weatherWind = document.createElement('li');
@@ -99,7 +107,19 @@ function getWeather() {
         })
 
 }
-// new Date
+
+// Function to create a new array of nth result from an API query
+function getEveryNth(data, nth) {
+    var result = [];
+
+    for (var i = 0; i < data.length; i += nth) {
+        result.push(data[i]);
+    }
+
+    return result;
+}
+
+// Uses latitude/longitude inputs for an openweather API query to get and display 5-day forecast weather information for that city 
 function getForecast() {
     var requestURL = 'https://api.openweathermap.org/data/2.5/forecast?lat=' + latitude + '&lon=' + longitude + '&units=imperial&APPID=c4775d1a77795c9e3426b0f8b3ca1221';
 
@@ -108,22 +128,12 @@ function getForecast() {
             return response.json();
         })
         .then(function(data) {
-            console.log(data);
+            // console.log(data);
             var data = data.list;
-            console.log(data);
-
-            function getEveryNth(data, nth) {
-                var result = [];
-
-                for (var i = 0; i < data.length; i += nth) {
-                    result.push(data[i]);
-                }
-
-                return result;
-            }
+            // console.log(data);
 
             data = getEveryNth(data, 8);
-            console.log(data);
+            // console.log(data);
 
             for (var i = 0; i < 5; i++) {
 
@@ -148,11 +158,9 @@ function getForecast() {
                 div.appendChild(icon);
                 div.appendChild(temp);
                 div.appendChild(wind);
-                div.appendChild(humidity);
+                div.appendChild(humidity);           
 
-           
-
-        }
+            }
             
         })
 }
