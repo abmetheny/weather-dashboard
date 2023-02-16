@@ -4,18 +4,20 @@ var currentHeader = document.getElementById('city-date');
 var searchButton = document.getElementById('search-button');
 var forecastHeader = document.getElementById('forecast-header');
 var forecastWeather = document.getElementById('daily-forecast-container');
-var previousSearch = document.getElementById('previous-search');
+var previousSearch = document.getElementById('searches-container');
 
 var searchInputVal = "";
 var searchInputArray = [];
-var storageArray = loadStorage();
+var previousStored = "";
+
+displayPreviousSearch();
 
 // Uses user input to query opeanweather API for city latitude and longitude
 function getLocation() {
     searchInputVal = document.querySelector('#city-name').value.replace(/\s+/g, '');
     console.log(searchInputVal);
     storePreviousSearch();
-    // displayPreviousSearch();
+    displayPreviousSearch();
     var requestURL = 'https://api.openweathermap.org/geo/1.0/direct?q=' + searchInputVal + '&APPID=c4775d1a77795c9e3426b0f8b3ca1221';
 
 
@@ -45,21 +47,29 @@ function storePreviousSearch() {
     searchInputArray.push(searchInputVal);
     console.log(searchInputArray);
     for (i = 0; i < searchInputArray.length; i++) {
-        localStorage.setItem(i, JSON.stringify(searchInputArray[i]));
+        localStorage.setItem(JSON.stringify(searchInputArray[i]), i);
     }
 }
 
-// Loads locally stored key/value pairs into a new array to prevent overwrite on page refresh
-function loadStorage() {
-    var storedPairs = {...localStorage};
-    return storedPairs;
-}
+//
+function displayPreviousSearch() {
+    var storedSearchArray = {...localStorage};
+    var storedSearchValues = Object.keys(storedSearchArray);
+    // storedSearchValues = JSON.parse(storedSearchValues);
+    console.log(storedSearchValues);
+    previousSearch.innerHTML = '';
 
-// function displayPreviousSearch() {
-//     let storageArray = JSON.parse(localStorage.getItem('previous'));
-//     console.log(storageArray);
-//     // var previousButton = document.createElement('button');
-// }
+    for (let i = 0; i < storedSearchValues.length; i++) {
+        previousStored = storedSearchValues[i].replace(/\"/g, "");
+        console.log(previousStored);
+        
+        var previousButton = document.createElement('button');
+        previousButton.appendChild(document.createTextNode(previousStored));
+        previousSearch.append(previousButton);
+
+    }
+    
+}
 
 
 // Clears out the search field
@@ -164,6 +174,5 @@ function getForecast() {
             
         })
 }
-
 
 searchButton.addEventListener('click', getLocation);
