@@ -23,14 +23,17 @@
                 
                 <label for="city-name">Search for a city:</label><br>
                 <input type="text" id="city-name" placeholder="City"><br>
-            
-            <input id="search-button" type="submit" value="Search">
-
+                <input class= "btn btn-primary btn-lg btn-block" id="search-button" type="submit" value="Search">
+                
+                <div id="alert" class="alert alert-danger invisible" role="alert">
+                    Please enter a valid city name.
+                  </div>
+                  
             </div>
 
             <div id="previous-search">
 
-                <h2>Previous Searches:</h1>
+                <h4>Previous Searches:</h4>
                 
                 <div id="searches-container"></div>
 
@@ -51,7 +54,7 @@
                 <h2 id="forecast-header"></h2>
                 
                 <!-- 5-day forecast for a given city -->
-                <div id="daily-forecast-container" class="row flex-nowrap">
+                <div id="daily-forecast-container" class="row flex-nowrap gap-3">
 
                 </div>
                 

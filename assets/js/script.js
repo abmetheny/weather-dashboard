@@ -1,25 +1,36 @@
 var currentWeather = document.getElementById('current-weather-container');
 var currentCity = document.getElementById('city-name');
+var alert = document.getElementById('alert');
 var currentHeader = document.getElementById('city-date');
 var searchButton = document.getElementById('search-button');
 var forecastHeader = document.getElementById('forecast-header');
 var forecastWeather = document.getElementById('daily-forecast-container');
 var previousSearch = document.getElementById('searches-container');
+var buttons = document.querySelectorAll('.btn');
 
 var searchInputVal = "";
 var searchInputArray = [];
 var previousStored = "";
+var inputAttribute = "";
 
 displayPreviousSearch();
 
 // Uses user input to query opeanweather API for city latitude and longitude
-function getLocation() {
+function getLocation(inputAttribute) {
     searchInputVal = document.querySelector('#city-name').value.replace(/\s+/g, '');
     console.log(searchInputVal);
+    if (!searchInputVal) {
+        alert.classList.remove('invisible');
+        return;
+    }
+    alert.classList.add('invisible');
+    searchButton.setAttribute('user-value', searchInputVal);
+    inputAttribute = event.target.getAttribute('user-value');
+    console.log(inputAttribute);
+
     storePreviousSearch();
     displayPreviousSearch();
-    var requestURL = 'https://api.openweathermap.org/geo/1.0/direct?q=' + searchInputVal + '&APPID=c4775d1a77795c9e3426b0f8b3ca1221';
-
+    var requestURL = 'https://api.openweathermap.org/geo/1.0/direct?q=' + inputAttribute + '&APPID=c4775d1a77795c9e3426b0f8b3ca1221';
 
     fetch(requestURL)
         .then(function(response) {
@@ -45,32 +56,36 @@ function getLocation() {
 // Pushes user inputs into an array
 function storePreviousSearch() {
     searchInputArray.push(searchInputVal);
-    console.log(searchInputArray);
+    // console.log(searchInputArray);
     for (i = 0; i < searchInputArray.length; i++) {
         localStorage.setItem(JSON.stringify(searchInputArray[i]), i);
     }
 }
 
-//
+// Populates previous search container with previous searches sorted alphabetically
 function displayPreviousSearch() {
     var storedSearchArray = {...localStorage};
     var storedSearchValues = Object.keys(storedSearchArray);
-    // storedSearchValues = JSON.parse(storedSearchValues);
-    console.log(storedSearchValues);
+    storedSearchValues.sort();
+    // console.log(storedSearchValues);
     previousSearch.innerHTML = '';
 
     for (let i = 0; i < storedSearchValues.length; i++) {
         previousStored = storedSearchValues[i].replace(/\"/g, "");
-        console.log(previousStored);
+        // console.log(previousStored);
         
         var previousButton = document.createElement('button');
+        previousButton.setAttribute('user-value', previousStored);
+        previousButton.className = "previous-button btn btn-secondary btn-sm btn-block"
+        previousButton.addEventListener('click', getLocation);
+        
         previousButton.appendChild(document.createTextNode(previousStored));
         previousSearch.append(previousButton);
-
+        
     }
+    // previousButton.onclick = getLocation();
     
 }
-
 
 // Clears out the search field
 function clearInput() {
@@ -176,3 +191,4 @@ function getForecast() {
 }
 
 searchButton.addEventListener('click', getLocation);
+// buttons.addEventListener('click', getLocation);
