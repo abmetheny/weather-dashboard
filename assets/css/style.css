@@ -1,3 +1,11 @@
+#page-header {
+    text-align: center;
+    background-color: rgb(30, 49, 112);
+    color: white;
+    padding: 15px;
+
+}
+
 li {
     list-style-type: none;
 }
@@ -13,4 +21,20 @@ li {
 
 .alert {
     width: 85%;
+}
+
+#current-weather-container {
+    margin-top: -35px;
+}
+
+#forecast-header {
+    margin-bottom: 20px;
+}
+
+.container {
+    margin-bottom: 20px;
+}
+
+.border {
+    background-color: lightgray;
 }

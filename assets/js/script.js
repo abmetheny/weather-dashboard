@@ -138,8 +138,8 @@ function getWeather(inputAttribute) {
             var weatherWind = document.createElement('li');
             var weatherHumidity = document.createElement('li');
 
-            weatherTemp.innerHTML = 'Temp: ' + data.main.temp + '\u00B0F';
-            weatherWind.innerHTML = 'Wind: ' + data.wind.speed +'mph';
+            weatherTemp.innerHTML = 'Temp: ' + Math.round(data.main.temp) + '\u00B0F';
+            weatherWind.innerHTML = 'Wind: ' + Math.round(data.wind.speed) +'mph';
             weatherHumidity.innerHTML = 'Humidity: ' + data.main.humidity + '%';
 
             currentWeather.appendChild(weatherTemp);
@@ -188,16 +188,18 @@ function getForecast() {
                 var div = document.createElement('div');
                 div.className = "col border";
                 var date = document.createElement('li');
+                var dateFormat = dayjs(data[i].dt_txt).format('M/D/YYYY');
                 var icon = document.createElement('img');
                 var temp = document.createElement('li');
                 var wind = document.createElement('li');
                 var humidity = document.createElement('li');
 
                 forecastHeader.innerHTML = '5-Day Forecast:';
-                date.innerHTML = data[i].dt_txt;
+                date.innerHTML = dateFormat;
+                date.style.fontWeight = 'bold';
                 icon.src = 'http://openweathermap.org/img/wn/' + data[i].weather[0].icon + '@2x.png';
-                temp.innerHTML = 'Temp: ' + data[i].main.temp + '\u00B0F';
-                wind.innerHTML = 'Wind: ' + data[i].wind.speed +'mph';
+                temp.innerHTML = 'Temp: ' + Math.round(data[i].main.temp) + '\u00B0F';
+                wind.innerHTML = 'Wind: ' + Math.round(data[i].wind.speed) +'mph';
                 humidity.innerHTML = 'Humidity: ' + data[i].main.humidity + '%';
                                    
                 // Adds the li element to the HTML id 

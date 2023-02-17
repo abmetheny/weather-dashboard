@@ -13,7 +13,7 @@
 </head>
 <body>
 
-    <h1>Weather Dashboard</h1>
+    <h1 id="page-header">Weather Dashboard</h1>
     <div class ="container-fluid row flex-nowrap">
 
         <!-- Current and previous searches sidebar -->
@@ -44,12 +44,16 @@
         <!-- Container for the API query results -->
         <div id="main-container" class="col">
 
-            <h2 id="city-date"></h2>
-            
-            <!-- Current weather for a given city -->
-            <div id="current-weather-container"></div>
-            
-            <div id="forecast-container">
+            <div class="container">
+
+                <h2 id="city-date"></h2>
+                
+                <!-- Current weather for a given city -->
+                <div id="current-weather-container"></div>
+
+            </div>
+                
+            <div id="forecast-container" class="container">
                 
                 <h2 id="forecast-header"></h2>
                 
