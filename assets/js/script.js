@@ -15,21 +15,40 @@ var inputAttribute = "";
 
 displayPreviousSearch();
 
-// Uses user input to query opeanweather API for city latitude and longitude
-function getLocation(inputAttribute) {
-    searchInputVal = document.querySelector('#city-name').value.replace(/\s+/g, '');
+function checkInput() {
     console.log(searchInputVal);
+    var searchInputVal = document.querySelector('#city-name').value.replace(/\s+/g, '');
+    searchButton.setAttribute('user-value', searchInputVal);
+    console.log(searchInputVal);
+
     if (!searchInputVal) {
         alert.classList.remove('invisible');
+        console.log("if");
         return;
     }
-    alert.classList.add('invisible');
-    searchButton.setAttribute('user-value', searchInputVal);
-    inputAttribute = event.target.getAttribute('user-value');
-    console.log(inputAttribute);
 
-    storePreviousSearch();
-    displayPreviousSearch();
+    else if (searchInputVal) {
+        storePreviousSearch(searchInputVal);
+        displayPreviousSearch();
+        getLocation();
+        console.log("else if");
+    }
+
+    else {
+        getLocation();
+        console.log("else");
+    }
+}
+
+// Uses user input to query opeanweather API for city latitude and longitude
+function getLocation(inputAttribute) {
+    // searchInputVal = document.querySelector('#city-name').value.replace(/\s+/g, '');
+    console.log(searchInputVal);
+    
+    alert.classList.add('invisible');
+    inputAttribute = event.target.getAttribute('user-value');
+    // console.log(inputAttribute);
+
     var requestURL = 'https://api.openweathermap.org/geo/1.0/direct?q=' + inputAttribute + '&APPID=c4775d1a77795c9e3426b0f8b3ca1221';
 
     fetch(requestURL)
@@ -42,8 +61,9 @@ function getLocation(inputAttribute) {
             longitude = data[0].lon;
             // console.log(latitude);
             // console.log(longitude);
+            // console.log(inputAttribute);
 
-            getWeather();
+            getWeather(inputAttribute);
             getForecast();
             
         })
@@ -54,7 +74,7 @@ function getLocation(inputAttribute) {
 }
 
 // Pushes user inputs into an array
-function storePreviousSearch() {
+function storePreviousSearch(searchInputVal) {
     searchInputArray.push(searchInputVal);
     // console.log(searchInputArray);
     for (i = 0; i < searchInputArray.length; i++) {
@@ -84,6 +104,7 @@ function displayPreviousSearch() {
         
     }
     // previousButton.onclick = getLocation();
+    // inputAttribute = event.target.getAttribute('user-value');
     
 }
 
@@ -101,8 +122,9 @@ function removeNodes() {
 }
 
 // Uses latitude/longitude inputs for an openweather API query to get and display current weather information for that city
-function getWeather() {
+function getWeather(inputAttribute) {
     var requestURL = 'https://api.openweathermap.org/data/2.5/weather?lat=' + latitude + '&lon=' + longitude + '&units=imperial&APPID=c4775d1a77795c9e3426b0f8b3ca1221';
+    // console.log(inputAttribute);
 
     fetch(requestURL)
         .then(function(response) {
@@ -110,6 +132,7 @@ function getWeather() {
         })
         .then(function(data) {
             // console.log(data);
+            // console.log(inputAttribute);
 
             var weatherTemp = document.createElement('li');
             var weatherWind = document.createElement('li');
@@ -126,7 +149,7 @@ function getWeather() {
             var currentDay = dayjs().format('M/D/YYYY');
             var icon = document.createElement('img');
             icon.src = 'http://openweathermap.org/img/wn/' + data.weather[0].icon + '@2x.png';
-            currentHeader.innerHTML = searchInputVal + " (" + currentDay + ")  ";
+            currentHeader.innerHTML = inputAttribute + " (" + currentDay + ")  ";
             currentHeader.append(icon);
 
         })
@@ -190,5 +213,5 @@ function getForecast() {
         })
 }
 
-searchButton.addEventListener('click', getLocation);
+searchButton.addEventListener('click', checkInput);
 // buttons.addEventListener('click', getLocation);
