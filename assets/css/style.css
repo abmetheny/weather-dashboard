@@ -6,6 +6,12 @@
 
 }
 
+#current-search label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 1.25rem;
+}
+
 li {
     list-style-type: none;
 }

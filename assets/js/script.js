@@ -6,7 +6,6 @@ var searchButton = document.getElementById('search-button');
 var forecastHeader = document.getElementById('forecast-header');
 var forecastWeather = document.getElementById('daily-forecast-container');
 var previousSearch = document.getElementById('searches-container');
-var buttons = document.querySelectorAll('.btn');
 
 var searchInputVal = "";
 var searchInputArray = [];
@@ -15,40 +14,40 @@ var inputAttribute = "";
 
 displayPreviousSearch();
 
-function checkInput() {
-    console.log(searchInputVal);
-    var searchInputVal = document.querySelector('#city-name').value.replace(/\s+/g, '');
+// Checks for user input to query API; if there isn't one, displays an alert
+function checkInput(event) {
+    // console.log(searchInputVal);
+    var searchInputVal = document.querySelector('#city-name').value.trim();
     searchButton.setAttribute('user-value', searchInputVal);
-    console.log(searchInputVal);
+    // console.log(searchInputVal);
 
     if (!searchInputVal) {
         alert.classList.remove('invisible');
-        console.log("if");
+        // console.log("if");
         return;
     }
 
     else if (searchInputVal) {
-        storePreviousSearch(searchInputVal);
-        displayPreviousSearch();
-        getLocation();
-        console.log("else if");
+        
+        getLocation(event);
+        // console.log("else if");
     }
 
     else {
-        getLocation();
-        console.log("else");
+        getLocation(event);
+        // console.log("else");
     }
 }
 
 // Uses user input to query opeanweather API for city latitude and longitude
-function getLocation(inputAttribute) {
+function getLocation(event) {
     // searchInputVal = document.querySelector('#city-name').value.replace(/\s+/g, '');
-    console.log(searchInputVal);
-    
+    // console.log(searchInputVal);
+    console.log("47", inputAttribute)
     alert.classList.add('invisible');
+    console.log(event)
     inputAttribute = event.target.getAttribute('user-value');
-    // console.log(inputAttribute);
-
+    console.log("48", inputAttribute)
     var requestURL = 'https://api.openweathermap.org/geo/1.0/direct?q=' + inputAttribute + '&APPID=c4775d1a77795c9e3426b0f8b3ca1221';
 
     fetch(requestURL)
@@ -56,15 +55,24 @@ function getLocation(inputAttribute) {
             return response.json();
         })
         .then(function(data) {
-            // console.log(data);
-            latitude = data[0].lat;
-            longitude = data[0].lon;
-            // console.log(latitude);
-            // console.log(longitude);
-            // console.log(inputAttribute);
+            console.log(data.length);
+            if(data.length <= 0){
+                console.log("no data")
+                alert.classList.remove('invisible');
 
-            getWeather(inputAttribute);
-            getForecast();
+            } else {
+                console.log("data")
+                latitude = data[0].lat;
+                longitude = data[0].lon;
+                // console.log(latitude);
+                // console.log(longitude);
+                // console.log(inputAttribute);
+                
+                getWeather(inputAttribute);
+                getForecast();
+                storePreviousSearch(inputAttribute);
+                displayPreviousSearch();
+            }
             
         })
  
@@ -96,7 +104,7 @@ function displayPreviousSearch() {
         
         var previousButton = document.createElement('button');
         previousButton.setAttribute('user-value', previousStored);
-        previousButton.className = "previous-button btn btn-secondary btn-sm btn-block"
+        previousButton.className = "previous-button btn btn-secondary btn-sm btn-block";
         previousButton.addEventListener('click', getLocation);
         
         previousButton.appendChild(document.createTextNode(previousStored));
@@ -183,6 +191,7 @@ function getForecast() {
             data = getEveryNth(data, 8);
             // console.log(data);
 
+            // Creates html elements for each returned query attribute
             for (var i = 0; i < 5; i++) {
 
                 var div = document.createElement('div');
@@ -202,7 +211,6 @@ function getForecast() {
                 wind.innerHTML = 'Wind: ' + Math.round(data[i].wind.speed) +'mph';
                 humidity.innerHTML = 'Humidity: ' + data[i].main.humidity + '%';
                                    
-                // Adds the li element to the HTML id 
                 forecastWeather.appendChild(div);
                 div.appendChild(date);
                 div.appendChild(icon);
@@ -216,4 +224,3 @@ function getForecast() {
 }
 
 searchButton.addEventListener('click', checkInput);
-// buttons.addEventListener('click', getLocation);
