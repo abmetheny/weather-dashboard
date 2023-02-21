@@ -25,6 +25,7 @@ Wrote HTML, JavaScript, and CSS files based on provided mockup:
 * Current weather displays the city name, date, weather icon, temperature, wind, and humidity
 * The 5-day forecast uses the same city name and displays the same weather data for the next five days
 * Cities entered in the search bar are added to the previous searches list, which is sorted in alphabetical order
+* Previous searches list is stored in local storage and persist upon page reload
 * Previous searches can be clicked to query the API and returns the current and future weather
 * If the search input field is blank or the API does not find a valid response, an error alert message will display
 
