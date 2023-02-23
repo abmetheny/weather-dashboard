@@ -20,14 +20,14 @@ THEN I am again presented with current and future conditions for that city
 ## Description of Work Performed
 Wrote HTML, JavaScript, and CSS files based on provided mockup:
 * Utilized Bootstrap and CSS to apply styles to the page
-* Used Open Weather API to query weather data and Day.js to format times
+* Used Open Weather API to query weather data and Day.js to format dates/times
 * Search bar allows user to input a city and return data from the API
 * Current weather displays the city name, date, weather icon, temperature, wind, and humidity
-* The 5-day forecast uses the same city name and displays the same weather data for the next five days
-* Cities entered in the search bar are added to the previous searches list, which is sorted in alphabetical order
-* Previous searches list is stored in local storage and persist upon page reload
-* Previous searches can be clicked to query the API and returns the current and future weather
-* If the search input field is blank or the API does not find a valid response, an error alert message will display
+* The 5-day forecast uses the same city name and displays the same type of weather data for the next five days
+* Cities entered in the search bar are added to the previous searches list in the sidebar, which is sorted in alphabetical order
+* Previous searches list is stored in local storage and persists upon page reload
+* Previous searches can be clicked to query the API and return the current and future weather
+* If the search input field is blank or the API does not find a valid response, an error alert message displays
 
 ## Link to deployed GitHub page
 [Deployed Challenge 6 Weather Dashboard Repo](https://abmetheny.github.io/weather-dashboard/)

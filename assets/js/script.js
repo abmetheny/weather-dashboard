@@ -16,38 +16,27 @@ displayPreviousSearch();
 
 // Checks for user input to query API; if there isn't one, displays an alert
 function checkInput(event) {
-    // console.log(searchInputVal);
     var searchInputVal = document.querySelector('#city-name').value.trim();
     searchButton.setAttribute('user-value', searchInputVal);
-    // console.log(searchInputVal);
 
     if (!searchInputVal) {
         alert.classList.remove('invisible');
-        // console.log("if");
         return;
     }
 
     else if (searchInputVal) {
-        
         getLocation(event);
-        // console.log("else if");
     }
 
     else {
         getLocation(event);
-        // console.log("else");
     }
 }
 
 // Uses user input to query opeanweather API for city latitude and longitude
 function getLocation(event) {
-    // searchInputVal = document.querySelector('#city-name').value.replace(/\s+/g, '');
-    // console.log(searchInputVal);
-    console.log("47", inputAttribute)
     alert.classList.add('invisible');
-    console.log(event)
     inputAttribute = event.target.getAttribute('user-value');
-    console.log("48", inputAttribute)
     var requestURL = 'https://api.openweathermap.org/geo/1.0/direct?q=' + inputAttribute + '&APPID=c4775d1a77795c9e3426b0f8b3ca1221';
 
     fetch(requestURL)
@@ -55,19 +44,14 @@ function getLocation(event) {
             return response.json();
         })
         .then(function(data) {
-            console.log(data.length);
             if(data.length <= 0){
                 console.log("no data")
                 alert.classList.remove('invisible');
 
             } else {
-                console.log("data")
                 latitude = data[0].lat;
                 longitude = data[0].lon;
-                // console.log(latitude);
-                // console.log(longitude);
-                // console.log(inputAttribute);
-                
+               
                 getWeather(inputAttribute);
                 getForecast();
                 storePreviousSearch(inputAttribute);
@@ -84,7 +68,6 @@ function getLocation(event) {
 // Pushes user inputs into an array
 function storePreviousSearch(searchInputVal) {
     searchInputArray.push(searchInputVal);
-    // console.log(searchInputArray);
     for (i = 0; i < searchInputArray.length; i++) {
         localStorage.setItem(JSON.stringify(searchInputArray[i]), i);
     }
@@ -95,12 +78,10 @@ function displayPreviousSearch() {
     var storedSearchArray = {...localStorage};
     var storedSearchValues = Object.keys(storedSearchArray);
     storedSearchValues.sort();
-    // console.log(storedSearchValues);
     previousSearch.innerHTML = '';
 
     for (let i = 0; i < storedSearchValues.length; i++) {
         previousStored = storedSearchValues[i].replace(/\"/g, "");
-        // console.log(previousStored);
         
         var previousButton = document.createElement('button');
         previousButton.setAttribute('user-value', previousStored);
@@ -111,8 +92,6 @@ function displayPreviousSearch() {
         previousSearch.append(previousButton);
         
     }
-    // previousButton.onclick = getLocation();
-    // inputAttribute = event.target.getAttribute('user-value');
     
 }
 
@@ -132,15 +111,12 @@ function removeNodes() {
 // Uses latitude/longitude inputs for an openweather API query to get and display current weather information for that city
 function getWeather(inputAttribute) {
     var requestURL = 'https://api.openweathermap.org/data/2.5/weather?lat=' + latitude + '&lon=' + longitude + '&units=imperial&APPID=c4775d1a77795c9e3426b0f8b3ca1221';
-    // console.log(inputAttribute);
 
     fetch(requestURL)
         .then(function(response) {
             return response.json();
         })
         .then(function(data) {
-            // console.log(data);
-            // console.log(inputAttribute);
 
             var weatherTemp = document.createElement('li');
             var weatherWind = document.createElement('li');
@@ -168,7 +144,7 @@ function getWeather(inputAttribute) {
 function getEveryNth(data, nth) {
     var result = [];
 
-    for (var i = 0; i < data.length; i += nth) {
+    for (var i = 7; i < data.length; i += nth) {
         result.push(data[i]);
     }
 
@@ -184,12 +160,9 @@ function getForecast() {
             return response.json();
         })
         .then(function(data) {
-            // console.log(data);
             var data = data.list;
-            // console.log(data);
 
             data = getEveryNth(data, 8);
-            // console.log(data);
 
             // Creates html elements for each returned query attribute
             for (var i = 0; i < 5; i++) {
